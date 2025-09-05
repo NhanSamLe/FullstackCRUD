@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Header from './components/layouts/header.jsx'
+import axios from './util/base.ts'
+import { useContext, useEffect  } from 'react'
+import { AuthContext  } from './components/context/auth.context.jsx'
+import {Spin} from 'antd'
 import './App.css'
+import { Outlet } from "react-router-dom";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { setAuth, appLoading, setAppLoading } = useContext(AuthContext);
+
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      try {
+        setAppLoading(true);
+        const res = await axios.get("/v1/api/user");
+        if (res && res.data) {
+          setAuth({
+            isAuthenticated: true,
+            user: {
+              email: res.data.email,
+              name: res.data.name,
+            },
+          });
+        }
+      } catch (err) {
+        console.error("Fetch account error:", err);
+        setAuth({
+          isAuthenticated: false,
+          user: { email: "", name: "" },
+        });
+      } finally {
+        setAppLoading(false);
+      }
+    };
+
+    fetchAccount();
+  }, [setAppLoading, setAuth]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      {appLoading ? (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        <>
+          <Header />
+          <Outlet />
+        </>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
