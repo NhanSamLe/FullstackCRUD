@@ -1,8 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import App from "./App.tsx";
-
+import "./index.css"
 import {
   createBrowserRouter,
   RouterProvider,
@@ -11,25 +10,31 @@ import {
 import Login from "./pages/login.jsx";
 import Register from "./pages/register.jsx";
 import Profile from "./pages/user.jsx";
-import { AuthWrapper } from "./components/context/auth.context.jsx";
+import HomePage from "./pages/home.jsx";
+import { AuthWrapper } from "./components/context/auth.wrapper.tsx";
 
-// Khai báo routes
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Trang chính
+    element: <App />,   // Layout chính có Header
+    children: [
+      {
+        index: true,     // tương đương path: "/"
+        element: <HomePage />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login />,   // Trang login KHÔNG có Header
   },
   {
     path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
+    element: <Register />, // Trang register KHÔNG có Header
   },
 ]);
 

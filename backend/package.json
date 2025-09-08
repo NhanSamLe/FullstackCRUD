@@ -4,8 +4,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch src --ext ts --exec node --loader ts-node/esm src/server.ts"
+     "dev": "nodemon --watch src --ext ts --exec node --loader ts-node/esm src/server.ts",
+  "build": "tsc",
+  "start": "node dist/server.js",
+  "debug": "node --loader ts-node/esm --trace-uncaught --trace-warnings src/server.ts"
+
   },
   "author": "",
   "license": "ISC",

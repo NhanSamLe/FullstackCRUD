@@ -10,12 +10,33 @@ export interface Login{
     password: string;
 }
 export const register = (data: Register) => {
-    return axios.post("/auth/register", data);
+    return axios.post("/register", data);
 };
-export const login = (data: Login) => {
-    return axios.post("/auth/login", data);
-}
+export const login = async (data: Login) => {
+  const res = await axios.post("/login", data);
+  if (res.data?.token) {   // đổi accessToken thành token
+    localStorage.setItem("token", res.data.token);
+  }
+  return res;
+};
 export const getProfile = () => {
-    return axios.get("/auth/profile");
+    return axios.get("/users");
+};
+
+export const getProducts = async (page: number = 1) => {
+  const res = await axios.get(`/product?page=${page}`);
+  return res.data;
+};
+
+// Lấy tất cả categories
+export const getCategories = async () => {
+  const res = await axios.get("/cate");   // endpoint /v1/api/cate
+  return res.data;
+};
+
+// Lấy sản phẩm theo categoryId
+export const getProductsByCategory = async (categoryId: string, page = 1, limit = 10) => {
+  const res = await axios.get(`/product/category/${categoryId}?page=${page}&limit=${limit}`);
+  return res.data; // { items, total, page, totalPages, hasMore }
 };
 

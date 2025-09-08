@@ -2,7 +2,7 @@ import React  from "react";
 import { Form, Input, Button, notification, Row, Divider } from "antd";
 import { Link , useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons"; 
-import { register } from "../api/auth.api";
+import { register } from "../util/api";
 const RegisterPage = () => {
     const navigate = useNavigate();
     const onFinish = async (values) => {
@@ -24,7 +24,7 @@ const RegisterPage = () => {
         <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
             <div style={{ width: 300, padding: 20, border: '1px solid #ccc', borderRadius: 5 }}>
                 <Form onFinish={onFinish}>
-                    <Form.Item name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
+                    <Form.Item name="name" rules={[{ required: true, message: 'Please input your username!' }]}>
                         <Input placeholder="Username" />
                     </Form.Item>
                     <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>

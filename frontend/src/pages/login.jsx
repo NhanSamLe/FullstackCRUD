@@ -2,8 +2,8 @@ import React from 'react';
 import { Form, Input, Button, notification, Row, Divider } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { login } from '../api/auth.api';
-import { AuthContext } from '../context/auth.context';
+import { login } from '../util/api';
+import { AuthContext } from '../components/context/auth.context';
 import { useContext } from 'react';
 
 const LoginPage = () => {
