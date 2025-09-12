@@ -1,5 +1,5 @@
 import React , {useContext, useState} from "react";
-import { UsergroupAddOutlined,HomeOutlined, SettingOutlined } from "@ant-design/icons";
+import { UsergroupAddOutlined,HomeOutlined, SettingOutlined,SearchOutlined } from "@ant-design/icons";
 
 import { Menu  } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [current, setCurrent] = useState("home");
+  const [current, setCurrent] = useState("profile");
 
   const items = [
     {

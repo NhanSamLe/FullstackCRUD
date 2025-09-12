@@ -106,3 +106,48 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error deleting product" });
   }
 };
+
+export const FuzzySearch = async (req: Request, res:Response )=> {
+   try {
+       const {
+      keyword = "",
+      page = "1",
+      limit = "10",
+      brand,
+      category,
+      minPrice,
+      maxPrice,
+      cpu,
+      ram,
+      storage,
+    } = req.query;
+      const filters: {
+      brand?: string;
+      category?: string;
+      minPrice?: number;
+      maxPrice?: number;
+      cpu?: string;
+      ram?: string;
+      storage?: string;
+    } = {};
+
+    if (brand) filters.brand = String(brand);
+    if (category) filters.category = String(category);
+    if (minPrice) filters.minPrice = Number(minPrice);
+    if (maxPrice) filters.maxPrice = Number(maxPrice);
+    if (cpu) filters.cpu = String(cpu);
+    if (ram) filters.ram = String(ram);
+    if (storage) filters.storage = String(storage);
+
+      const result = await productService.fuzzySearchProduct(String(keyword),parseInt(page as string, 10 ), parseInt(limit as string,10),filters);
+      res.status(200).json({
+        success: true,...result,
+      })
+   } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error while searching products",
+      error: String(error) // tạm thời in ra để biết
+    });  
+   }
+} 

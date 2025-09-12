@@ -7,6 +7,8 @@ const router = express.Router();
 
 // router.use(authMiddleware);
 // router.use(delay);
+
+router.get("/search", productController.FuzzySearch);
 router.post("/", productController.createProduct);
 
 // Lấy tất cả sản phẩm (có phân trang)
@@ -28,4 +30,6 @@ router.put("/:id", productController.updateProduct);
 // Xóa sản phẩm
 // DELETE /api/products/:id
 router.delete("/:id", productController.deleteProduct);
+
+
 export default router;
