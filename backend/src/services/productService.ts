@@ -60,6 +60,24 @@ export const updateProduct = async (id: string, data: Partial<IProduct>) => {
 export const deleteProduct = async (id: string) => {
   return await Product.findByIdAndDelete(id);
 };
+export const getProductFilters = async () => {
+  try {
+    // Lấy danh sách unique từ collection Product
+    const brands = await Product.distinct("brand");
+    const cpus = await Product.distinct("cpu");
+    const rams = await Product.distinct("ram");
+    const storages = await Product.distinct("storage");
+
+    return {
+      brands: brands.filter(Boolean),   // loại bỏ null/undefined
+      cpus: cpus.filter(Boolean),
+      rams: rams.filter(Boolean),
+      storages: storages.filter(Boolean),
+    };
+  } catch (err) {
+    throw new Error("Không thể lấy filters: " + err);
+  }
+};
 
 export const fuzzySearchProduct = async (keyword:string, page =1 , limit = 10, filters?: { brand?: string; category?: string; minPrice?: number; maxPrice?: number ;  cpu?: string;
     ram?: string;

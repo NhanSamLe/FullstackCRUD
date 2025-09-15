@@ -20,6 +20,11 @@ const { Search } = Input;
 const { Panel } = Collapse;
 
 const HomePage = () => {
+
+  const [brands, setBrands] = useState([]);
+const [cpus, setCpus] = useState([]);
+const [rams, setRams] = useState([]);
+const [storages, setStorages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCate, setSelectedCate] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -47,6 +52,20 @@ const HomePage = () => {
       message.error("Không thể tải danh mục!");
     }
   };
+  useEffect(() => {
+  const fetchFilters = async () => {
+    try {
+      const res = await axios.get("product/filters");
+      setBrands(res.data.brands || []);
+      setCpus(res.data.cpus || []);
+      setRams(res.data.rams || []);
+      setStorages(res.data.storages || []);
+    } catch (err) {
+      message.error("Không thể tải bộ lọc!");
+    }
+  };
+  fetchFilters();
+}, []);
 
   // API search + filter
   const fetchFuzzySearch = async (keyword = "", pageNum = 1) => {
@@ -127,11 +146,11 @@ const HomePage = () => {
               value={brand || undefined}
               allowClear
             >
-              <Option value="Apple">Apple</Option>
-              <Option value="Samsung">Samsung</Option>
-              <Option value="Dell">Dell</Option>
-              <Option value="Asus">Asus</Option>
-              <Option value="HP">HP</Option>
+                        {brands.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
             </Select>
 
             <Select
@@ -141,10 +160,11 @@ const HomePage = () => {
               value={cpu || undefined}
               allowClear
             >
-              <Option value="Intel i5">Intel i5</Option>
-              <Option value="Intel i7">Intel i7</Option>
-              <Option value="Apple M2">Apple M2</Option>
-              <Option value="Ryzen 5">Ryzen 5</Option>
+              {cpus.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
             </Select>
 
             <Select
@@ -154,9 +174,11 @@ const HomePage = () => {
               value={ram || undefined}
               allowClear
             >
-              <Option value="8GB">8GB</Option>
-              <Option value="16GB">16GB</Option>
-              <Option value="32GB">32GB</Option>
+              {rams.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
             </Select>
 
             <Select
@@ -166,9 +188,11 @@ const HomePage = () => {
               value={storage || undefined}
               allowClear
             >
-              <Option value="256GB SSD">256GB SSD</Option>
-              <Option value="512GB SSD">512GB SSD</Option>
-              <Option value="1TB SSD">1TB SSD</Option>
+              {storages.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
             </Select>
 
             <InputNumber

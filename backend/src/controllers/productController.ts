@@ -106,6 +106,14 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error deleting product" });
   }
 };
+export const getFilters = async (req : Request , res : Response) => {
+  try {
+    const filters = await productService.getProductFilters();
+    return res.json(filters);
+  } catch (err) {
+    return res.status(500).json({  error: String(err) });
+  }
+};
 
 export const FuzzySearch = async (req: Request, res:Response )=> {
    try {
